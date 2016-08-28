@@ -72,7 +72,7 @@ public class User {
     }
 
     public List<Game> getGames() {
-        return games;
+        return this.games;
     }
 
     public void setGames(List<Game> games) {

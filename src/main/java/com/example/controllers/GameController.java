@@ -5,9 +5,7 @@ import com.example.models.GameRepository;
 import com.example.models.User;
 import com.example.models.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by SIMONTHEPIMON on 8/28/2016.
@@ -24,9 +22,9 @@ public class GameController {
     /**
      * GET /create  --> Create a new user and save it in the database.
      */
-    @RequestMapping("games/create")
+    @RequestMapping(value = "games/create", method = RequestMethod.GET)
     @ResponseBody
-    public String create(String name) {
+    public String create(@RequestParam String name) {
         String gameName = "";
         try {
             Game game = new Game(name);
@@ -45,9 +43,9 @@ public class GameController {
     /**** READ ****/
 
 
-    @RequestMapping("games/get-by-name")
+    @RequestMapping(value = "games/get-by-name", method = RequestMethod.GET)
     @ResponseBody
-    public String getByEmail(String name) {
+    public String getByEmail(@RequestParam String name) {
         long gameId;
         try {
            Game game = gameRepository.findByName(name);
@@ -59,7 +57,7 @@ public class GameController {
         return "The game ID is: " + gameId;
     }
 
-    @RequestMapping("/games")
+    @RequestMapping(value = "/games", method = RequestMethod.GET)
     @ResponseBody
     public String getAllUsers(){
 
@@ -78,9 +76,9 @@ public class GameController {
      * GET /update  --> Update the email and the name for the user in the
      * database having the passed id.
      */
-    @RequestMapping("games/update")
+    @RequestMapping(value = "games/update", method = RequestMethod.GET)
     @ResponseBody
-    public String updateGame(long id, String name) {
+    public String updateGame(@RequestParam long id, @RequestParam String name) {
         try {
             Game game = gameRepository.findOne(id);
             game.setName(name);
@@ -97,9 +95,9 @@ public class GameController {
     /**
      * GET /delete  --> Delete the user having the passed id.
      */
-    @RequestMapping("games/delete")
+    @RequestMapping(value = "games/delete" , method = RequestMethod.GET)
     @ResponseBody
-    public String delete(long id) {
+    public String delete(@RequestParam long id) {
         try {
             gameRepository.delete(id);
         }

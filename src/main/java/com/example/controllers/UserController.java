@@ -4,9 +4,12 @@ import com.example.models.User;
 import com.example.models.UserRepository;
 
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -23,9 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
         /**
          * GET /create  --> Create a new user and save it in the database.
          */
-        @RequestMapping("/create")
+        @RequestMapping(value = "users/create" , method = RequestMethod.GET)
         @ResponseBody
-        public String create(String email, String name) {
+        public String create(@RequestParam String email, @RequestParam String name) {
             String userId = "";
             try {
                 User user = new User(email, name);
@@ -44,9 +47,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
     /**** READ ****/
 
 
-    @RequestMapping("/get-by-email")
+    @RequestMapping(value = "users/get-by-email", method = RequestMethod.GET)
     @ResponseBody
-    public String getByEmail(String email) {
+    public String getByEmail(@RequestParam String email) {
         String userId = "";
         try {
             User user = userRepository.findByEmail(email);
@@ -58,9 +61,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
         return "The user id is: " + userId;
     }
 
-    @RequestMapping("/get-by-id")
+    @RequestMapping(value = "users/get-by-id", method = RequestMethod.GET)
     @ResponseBody
-    public String getById(Long id) {
+    public String getById(@RequestParam Long id) {
         String userEmail = "";
         try {
             User user = userRepository.findById(id);
@@ -72,7 +75,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
         return "The user id is: " + userEmail;
     }
 
-    @RequestMapping("/users")
+    @RequestMapping(value = "users/get-all", method = RequestMethod.GET)
     @ResponseBody
     public String getAllUsers(){
 
@@ -93,9 +96,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
      * GET /update  --> Update the email and the name for the user in the
      * database having the passed id.
      */
-    @RequestMapping("/update")
+    @RequestMapping(value = "users/update", method = RequestMethod.GET)
     @ResponseBody
-    public String updateUser(long id, String email, String name) {
+    public String updateUser(@RequestParam long id, @RequestParam String email, @RequestParam String name) {
         try {
             User user = userRepository.findOne(id);
             user.setEmail(email);
@@ -115,9 +118,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
     /**
     * GET /delete  --> Delete the user having the passed id.
     */
-    @RequestMapping("/delete")
+    @RequestMapping(value = "users/delete" , method = RequestMethod.GET)
     @ResponseBody
-    public String delete(long id) {
+    public String delete(@RequestParam long id) {
         try {
             User user = new User(id);
             userRepository.delete(user);
