@@ -1,3 +1,5 @@
 .idea/
 .mvn/
 MySQLJPATester.iml
+target/
+*.iml
