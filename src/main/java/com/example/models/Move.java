@@ -20,7 +20,7 @@ public class Move {
     @NotNull
     private String gameState;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gameId")
     private Game game;
 

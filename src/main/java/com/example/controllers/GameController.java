@@ -1,9 +1,7 @@
 package com.example.controllers;
 
 import com.example.models.Game;
-import com.example.models.GameRepository;
-import com.example.models.User;
-import com.example.models.UserRepository;
+import com.example.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

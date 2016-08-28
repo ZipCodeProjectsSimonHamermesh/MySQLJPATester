@@ -1,9 +1,9 @@
 package com.example.controllers;
 
 import com.example.models.Game;
-import com.example.models.GameRepository;
+import com.example.repositories.GameRepository;
 import com.example.models.User;
-import com.example.models.UserRepository;
+import com.example.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,9 @@
 package com.example.controllers;
 
 import com.example.models.User;
-import com.example.models.UserRepository;
+import com.example.repositories.UserRepository;
 
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

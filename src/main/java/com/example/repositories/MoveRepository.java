@@ -1,5 +1,6 @@
-package com.example.models;
+package com.example.repositories;
 
+import com.example.models.Move;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;

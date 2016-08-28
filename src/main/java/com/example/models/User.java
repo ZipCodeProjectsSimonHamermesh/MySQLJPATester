@@ -22,7 +22,7 @@ public class User {
     @NotNull
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="User_Games",
     joinColumns=@JoinColumn(name="User_ID", referencedColumnName="id"),
     inverseJoinColumns=@JoinColumn(name="Game_ID", referencedColumnName="id"))

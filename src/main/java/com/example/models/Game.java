@@ -21,10 +21,10 @@ public class Game {
     @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "games")
+    @ManyToMany(mappedBy = "games", fetch = FetchType.LAZY)
     List<User> users;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
     List<Move> moves;
 
     public Game() {
