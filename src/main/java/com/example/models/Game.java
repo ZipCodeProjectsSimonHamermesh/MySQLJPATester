@@ -1,7 +1,6 @@
 package com.example.models;
 
 import javax.persistence.*;
-import javax.validation.OverridesAttribute;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -64,8 +63,18 @@ public class Game {
         this.users = users;
     }
 
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
+
     @Override
     public String toString(){
         return "Game name:" + this.name + " Game Id: " + this.id + " Players: " + this.users.toString();
     }
+
+
 }

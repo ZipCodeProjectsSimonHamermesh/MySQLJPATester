@@ -1,7 +1,9 @@
 package com.example.controllers;
 
 import com.example.models.Game;
+import com.example.models.Move;
 import com.example.repositories.GameRepository;
+import com.example.repositories.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,9 @@ public class GameController {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private MoveRepository moveRepository;
 
     /**** CREATE ****/
     /**
@@ -35,12 +40,7 @@ public class GameController {
         return "Game succesfully created with name = " + gameName;
     }
 
-
-
-
     /**** READ ****/
-
-
     @RequestMapping(value = "games/get-by-name", method = RequestMethod.GET)
     @ResponseBody
     public String getByEmail(@RequestParam String name) {
@@ -55,16 +55,10 @@ public class GameController {
         return "The game ID is: " + gameId;
     }
 
-    @RequestMapping(value = "/games", method = RequestMethod.GET)
+    @RequestMapping(value = "games/getAllGames", method = RequestMethod.GET)
     @ResponseBody
-    public String getAllUsers(){
-
-        String retStr = "";
-        Iterable<Game> allGames = gameRepository.findAll();
-        for(Game g: allGames){
-            retStr += g.toString();
-        }
-        return retStr;
+    public String getAllGames(){
+        return gameRepository.findAll().toString();
     }
 
 
@@ -86,6 +80,25 @@ public class GameController {
             return "Error updating the user: " + ex.toString();
         }
         return "Game succesfully updated!";
+    }
+
+    /** This only works because the Move is saved before the Game is saved. **/
+    @RequestMapping(value = "games/addNewMoveToGame", method = RequestMethod.GET)
+    @ResponseBody
+    public String addNewMoveToGame(@RequestParam long gameId, @RequestParam String moveNumber, @RequestParam String gameState) {
+        Move move;
+        Game game;
+        try {
+            game = gameRepository.findOne(gameId);
+            move = new Move(moveNumber,gameState,game);
+            moveRepository.save(move);
+            game.getMoves().add(move);
+            gameRepository.save(game);
+        }
+        catch (Exception ex) {
+            return "Error updating the user: " + ex.toString();
+        }
+        return "Game succesfully updated!" + game.getMoves().toString();
     }
 
 
