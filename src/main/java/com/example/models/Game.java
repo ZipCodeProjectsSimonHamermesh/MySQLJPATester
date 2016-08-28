@@ -24,6 +24,9 @@ public class Game {
     @ManyToMany(mappedBy = "games")
     List<User> users;
 
+    @OneToMany(mappedBy = "game")
+    List<Move> moves;
+
     public Game() {
     }
 
