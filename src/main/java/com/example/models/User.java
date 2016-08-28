@@ -2,6 +2,7 @@ package com.example.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by simonhamermesh on 3/7/16.
@@ -20,6 +21,13 @@ public class User {
 
     @NotNull
     private String name;
+
+    @ManyToMany
+    @JoinTable(name="User_Games",
+    joinColumns=@JoinColumn(name="User_ID", referencedColumnName="id"),
+    inverseJoinColumns=@JoinColumn(name="Game_ID", referencedColumnName="id"))
+    private List<Game> games;
+
 
     // Public methods
 
@@ -63,4 +71,11 @@ public class User {
         return "This user's first name is: " + this.name + " Their email is: " + this.email + "\n";
     }
 
- }
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+}
