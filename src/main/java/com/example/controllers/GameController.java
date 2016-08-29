@@ -2,10 +2,14 @@ package com.example.controllers;
 
 import com.example.models.Game;
 import com.example.models.Move;
+import com.example.models.User;
 import com.example.repositories.GameRepository;
 import com.example.repositories.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SIMONTHEPIMON on 8/28/2016.
@@ -22,9 +26,6 @@ public class GameController {
     private MoveRepository moveRepository;
 
     /**** CREATE ****/
-    /**
-     * GET /create  --> Create a new user and save it in the database.
-     */
     @RequestMapping(value = "games/create", method = RequestMethod.GET)
     @ResponseBody
     public String create(@RequestParam String name) {
@@ -38,6 +39,39 @@ public class GameController {
             return "Error creating the user: " + ex.toString();
         }
         return "Game succesfully created with name = " + gameName;
+    }
+
+    @RequestMapping(value = "games/newChildGame", method = RequestMethod.GET)
+    public String createNewChildGame(@RequestParam long gameId, @RequestParam String gameName){
+
+        try{
+
+        Game childGame = new Game(gameName);
+        List<Move> moves = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        gameRepository.save(childGame);
+
+        Game parentGame = gameRepository.findById(gameId);
+
+        for(Move m: parentGame.getMoves()){
+            Move newMove = new Move(m.getMoveNumber(),m.getGameState(),parentGame);
+            moveRepository.save(newMove);
+            moves.add(m);
+        }
+        for(User u: parentGame.getUsers()){
+            users.add(u);
+        }
+
+        childGame.setUsers(users);
+        childGame.setMoves(moves);
+        childGame.setParentGame(parentGame);
+        gameRepository.save(childGame);
+
+        }catch (Exception e) {
+        return e.toString();
+        }
+
+        return "success?";
     }
 
     /**** READ ****/
@@ -64,13 +98,9 @@ public class GameController {
 
 
     /**** UPDATE ****/
-    /**
-     * GET /update  --> Update the email and the name for the user in the
-     * database having the passed id.
-     */
-    @RequestMapping(value = "games/update", method = RequestMethod.GET)
+    @RequestMapping(value = "games/updateGameName", method = RequestMethod.GET)
     @ResponseBody
-    public String updateGame(@RequestParam long id, @RequestParam String name) {
+    public String updateGameName(@RequestParam long id, @RequestParam String name) {
         try {
             Game game = gameRepository.findOne(id);
             game.setName(name);
@@ -80,6 +110,20 @@ public class GameController {
             return "Error updating the user: " + ex.toString();
         }
         return "Game succesfully updated!";
+    }
+
+    @RequestMapping(value = "games/setParentGame", method = RequestMethod.GET)
+    public String setParentGame(@RequestParam long childGameId, @RequestParam long parentGameId){
+        Game childGame;
+        Game parentGame;
+        try{
+            childGame = gameRepository.findById(childGameId);
+            parentGame = gameRepository.findById(parentGameId);
+            childGame.setParentGame(parentGame);
+            gameRepository.save(childGame);
+        }catch (Exception e){
+            return e.toString();}
+        return "Success";
     }
 
     /** This only works because the Move is saved before the Game is saved. **/
@@ -103,9 +147,6 @@ public class GameController {
 
 
     /**** DELETE ****/
-    /**
-     * GET /delete  --> Delete the user having the passed id.
-     */
     @RequestMapping(value = "games/delete" , method = RequestMethod.GET)
     @ResponseBody
     public String delete(@RequestParam long id) {

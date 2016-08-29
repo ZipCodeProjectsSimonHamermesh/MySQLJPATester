@@ -27,14 +27,14 @@ public class Move {
     public Move() {
     }
 
-    public Move(long id, String moveNumber, String gameState, Game game) {
-        this.id = id;
+    public Move(String moveNumber, String gameState, Game game) {
         this.moveNumber = moveNumber;
         this.gameState = gameState;
         this.game = game;
     }
 
-    public Move(String moveNumber, String gameState, Game game) {
+    public Move(long id, String moveNumber, String gameState, Game game) {
+        this.id = id;
         this.moveNumber = moveNumber;
         this.gameState = gameState;
         this.game = game;

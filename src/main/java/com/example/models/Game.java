@@ -21,10 +21,14 @@ public class Game {
     private String name;
 
     @ManyToMany(mappedBy = "games", fetch = FetchType.LAZY)
-    List<User> users;
+    private List<User> users;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
-    List<Move> moves;
+    private List<Move> moves;
+
+    @OneToOne
+    @JoinColumn(name = "parent_game_id", nullable = true)
+    private Game parentGame;
 
     public Game() {
     }
@@ -33,10 +37,24 @@ public class Game {
         this.name = name;
     }
 
-    public Game(long id, String name, List<User> users) {
+    public Game(String name, Game parentGame) {
+        this.name = name;
+        this.parentGame = parentGame;
+    }
+
+    public Game(String name, List<User> users, List<Move> moves, Game parentGame) {
+        this.name = name;
+        this.users = users;
+        this.moves = moves;
+        this.parentGame = parentGame;
+    }
+
+    public Game(long id, String name, List<User> users, List<Move> moves, Game parentGame) {
         this.id = id;
         this.name = name;
         this.users = users;
+        this.moves = moves;
+        this.parentGame = parentGame;
     }
 
     public long getId() {
@@ -71,10 +89,16 @@ public class Game {
         this.moves = moves;
     }
 
+    public Game getParentGame() {
+        return parentGame;
+    }
+
+    public void setParentGame(Game parentGame) {
+        this.parentGame = parentGame;
+    }
+
     @Override
     public String toString(){
         return "Game name:" + this.name + " Game Id: " + this.id + " Players: " + this.users.toString();
     }
-
-
 }
